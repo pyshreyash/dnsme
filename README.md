@@ -1,1 +1,1 @@
-Before getting into this, it would be nice to revisit the [dns terminologies](http://jnvs.ca/blog/2022/02/14/some-dns-terminology) and believe me the way I've used it might be different as well :wink:
+Before getting into this, it would be nice to revisit the [dns terminologies](http://jvns.ca/blog/2022/02/14/some-dns-terminology) and believe me the way I've used it might be different as well :wink:
