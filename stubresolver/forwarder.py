@@ -1,22 +1,21 @@
-"""DNS upstream forwarding placeholders."""
-from socket import socket
+from socket import socket, timeout
+import logging
 
-def forward_query(parsed_packet: dict, data: bytes, upstream: tuple, upstream_sock: socket) -> bytes:
+def forward_query(parsed_packet: dict, data: bytes, upstream: tuple, upstream_sock: socket) -> tuple[bytes, int]:
     """Forward a DNS query to an upstream resolver and return the raw response bytes."""
-    upstream_sock.settimeout(0.5)
 
-    txn_id = parsed_packet["id"]
+    txn_id = parsed_packet["header"]["id"]
     upstream_sock.sendto(data, upstream)
 
     try:
         recursive_response, _ = upstream_sock.recvfrom(4096)
-    except TimeoutError as e:
-        print(f"Error receiving response from upstream: {e}")
-        return b''
+    except timeout:
+        logging.error(f"[ERROR] Timeout receiving response from upstream")
+        return b'', 0
     
     resp_id = int.from_bytes(recursive_response[:2], "big")
     if resp_id != txn_id:
-        print(f"Transaction ID mismatch: expected {txn_id}, got {resp_id}")
-        return b''
+        logging.warning(f"[WARNING] Transaction ID mismatch: expected {txn_id}, got {resp_id}")
+        return b'', 0
     
-    return recursive_response
+    return recursive_response, resp_id

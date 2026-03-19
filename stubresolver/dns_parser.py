@@ -10,7 +10,7 @@ def parse_query(data: bytes) -> dict:
     header["aa"] = (temp >> 10) & 1
     header["tc"] = (temp >> 9) & 1
     header["rd"], header["ra"] = (temp >> 8) & 1, (temp >> 7) & 1
-    header["z"] = (temp >> 4) & 15
+    header["z"] = (temp >> 4) & 7
     header["rcode"] = temp & 15
     header["qdcount"] = int.from_bytes(data[4:6], "big")
     header["ancount"] = int.from_bytes(data[6:8], "big")
@@ -27,9 +27,7 @@ def parse_query(data: bytes) -> dict:
     question["qtype"] = int.from_bytes(data[curr_pointer+1:curr_pointer+3], "big")
     question["qclass"] = int.from_bytes(data[curr_pointer+3: curr_pointer+5], "big")
 
-
-    print(f"domain is: {question['qname']}")
-    return {}
+    return {"header": header, "question": question}
 
 
 def extract_domain_name(data: bytes) -> str:
