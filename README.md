@@ -13,7 +13,8 @@ The first part implements a **UDP DNS stub resolver + forwarder**:
 It is **not** a recursive resolver. It is a **packet forwarder** with minimal parsing for logging. Also it **cannot handle concurrent requests**
 
 ## Ch2: Handling Concurrent Requests & Caching
-What happens when QPS(*Queries per Second*) explode
+What happens when QPS ( *Queries per Second* ) explode
 
 ## Ch3: Getting over the stubborn - Recursive Resolver
-Implementing '8.8.8.8' `client -> stub -> recursive-resovler -> root -> TLD -> authoritative -> answer`
+Implementing '8.8.8.8' 
+`client -> stub -> recursive-resovler -> root -> TLD -> authoritative -> answer`
